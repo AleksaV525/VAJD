@@ -1,7 +1,7 @@
 const root=document.documentElement,nav=document.querySelector('nav'),mb=document.querySelector('.menu');
 root.classList.add('js');
 mb.addEventListener('click',()=>{const o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Zatvori':'Meni';document.body.style.overflow=o?'hidden':'';document.body.classList.toggle('nv',o)});
-const dk=document.querySelector('.dock'),sc=()=>dk&&dk.classList.toggle('on',scrollY>360);sc();addEventListener('scroll',sc,{passive:true});
+
 const els=[...document.querySelectorAll('.head,.card,.split>*,.steps>div,.tcard,.bento .ph,.ctab,.faq details,.tools')];
 if('IntersectionObserver' in window){
  els.forEach((e,i)=>{e.setAttribute('data-r','');e.style.transitionDelay=(i%4)*70+'ms'});
