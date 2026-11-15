@@ -1,7 +1,4 @@
-const root=document.documentElement,nav=document.querySelector('nav'),mb=document.querySelector('.menu');
-root.classList.add('js');
-mb.addEventListener('click',()=>{const o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Zatvori':'Meni';document.body.style.overflow=o?'hidden':'';document.body.classList.toggle('nv',o)});
-
+document.documentElement.classList.add('js');
 const els=[...document.querySelectorAll('.head,.card,.split>*,.steps>div,.tcard,.bento .ph,.ctab,.faq details,.tools')];
 if('IntersectionObserver' in window){
  els.forEach((e,i)=>{e.setAttribute('data-r','');e.style.transitionDelay=(i%4)*70+'ms'});
@@ -9,10 +6,14 @@ if('IntersectionObserver' in window){
  els.forEach(e=>io.observe(e));
 }
 const groups=[...document.querySelectorAll('.filters')];
-if(groups.length){const items=[...document.querySelectorAll('.item')],q=document.querySelector('#q'),st={c:'sve',m:'sve'};
-const run=()=>{const s=q.value.trim().toLowerCase();items.forEach(i=>i.hidden=!((st.c==='sve'||i.dataset.c===st.c)&&(st.m==='sve'||i.dataset.m.split(' ').includes(st.m))&&(!s||(i.dataset.n+i.dataset.d).toLowerCase().includes(s))))};
-groups.forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[g.dataset.k]=b.dataset.f;g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));run()}));
-q.addEventListener('input',run);
-const d=document.querySelector('dialog');
-items.forEach(i=>i.addEventListener('click',()=>{d.querySelector('h3').textContent=i.dataset.n;d.querySelector('p').textContent=i.dataset.d;d.showModal()}));
-d.addEventListener('click',e=>{if(e.target===d||e.target.hasAttribute('data-close'))d.close()})}
+if(groups.length){
+ const items=[...document.querySelectorAll('.item')],q=document.querySelector('#q'),cnt=document.querySelector('.count'),em=document.querySelector('.empty'),st={c:'sve',m:'sve'};
+ const run=()=>{const s=q.value.trim().toLowerCase();let n=0;
+  items.forEach(i=>{const ok=(st.c==='sve'||i.dataset.c===st.c)&&(st.m==='sve'||i.dataset.m.split(' ').includes(st.m))&&(!s||(i.dataset.n+' '+i.dataset.d).toLowerCase().includes(s));i.hidden=!ok;if(ok)n++});
+  cnt.textContent=n===items.length?n+' stavki':'Prikazano '+n+' od '+items.length;em.hidden=n>0};
+ groups.forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[g.dataset.k]=b.dataset.f;g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));run()}));
+ q.addEventListener('input',run);run();
+ const d=document.querySelector('dialog');
+ items.forEach(i=>i.addEventListener('click',()=>{d.querySelector('h3').textContent=i.dataset.n;d.querySelector('p').textContent=i.dataset.d;d.showModal()}));
+ d.addEventListener('click',e=>{if(e.target===d||e.target.hasAttribute('data-close'))d.close()});
+}
