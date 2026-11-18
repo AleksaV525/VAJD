@@ -1,5 +1,5 @@
 document.documentElement.classList.add('js');
-const els=[...document.querySelectorAll('.head,.card,.split>*,.steps>div,.tcard,.bento .ph,.ctab,.faq details,.tools')];
+const els=[...document.querySelectorAll('.head,.card,.split>*,.steps>div,.tcard,.bento,.ctab,.faq details,.tools')];
 if('IntersectionObserver' in window){
  els.forEach((e,i)=>{e.setAttribute('data-r','');e.style.transitionDelay=(i%4)*70+'ms'});
  const io=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;const e=x.target;e.classList.add('in');io.unobserve(e);setTimeout(()=>{e.removeAttribute('data-r');e.style.transitionDelay=''},1100)}),{threshold:.1,rootMargin:'0px 0px -30px 0px'});
@@ -17,3 +17,9 @@ if(groups.length){
  items.forEach(i=>i.addEventListener('click',()=>{d.querySelector('h3').textContent=i.dataset.n;d.querySelector('p').textContent=i.dataset.d;d.showModal()}));
  d.addEventListener('click',e=>{if(e.target===d||e.target.hasAttribute('data-close'))d.close()});
 }
+
+document.querySelectorAll('.bento').forEach(sc=>{
+ const n=sc.children.length,d=document.createElement('div');d.className='dots';d.setAttribute('aria-hidden','true');d.innerHTML='<i></i>'.repeat(n);sc.after(d);
+ const dots=[...d.children],upd=()=>{const w=sc.children[0].getBoundingClientRect().width+10;let i=Math.round(sc.scrollLeft/w);if(sc.scrollLeft+sc.clientWidth>=sc.scrollWidth-4)i=n-1;dots.forEach((x,k)=>x.classList.toggle('on',k===Math.min(n-1,i)))};
+ sc.addEventListener('scroll',upd,{passive:true});upd();
+});
